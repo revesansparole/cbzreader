@@ -35,7 +35,9 @@ setup_kwds = dict(
     install_requires=[
         ],
     tests_require=[
+        "coverage",
         "pytest",
+        "pytest-cov",
         "pytest-mock",
         ],
     entry_points={},

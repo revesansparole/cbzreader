@@ -17,6 +17,7 @@
     "pkgname": "cbzreader",
     "url": null
   },
+  "coverage": {},
   "doc": {
     "description": "read and edit cbz files",
     "fmt": "rst",

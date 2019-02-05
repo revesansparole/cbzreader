@@ -1,10 +1,13 @@
 {
+  ".coveragerc": {
+    "coverage": "7z5Xn67sqzMy5tnpsnSZVp2VNdRRM04dMXQeWOCHMlD+GuOQ+ixatyUxE7xw1ojKkXVdm7VW9BPjcURhL6STyQ=="
+  },
   ".gitignore": {
-    "git": "jnCaLfGRAutEq9LXZARiCL41JCYdK35B12itWu9hDtLifOOvRewc5ZKZxJyiDJ9PIvb1hYEPaM48pgGIE6fV4w=="
+    "git": "AA3ZpeLqhpN3k8JI+F7Vm0PKiYxVOigvwI24IIyOB6GGJ2dY7CJLtdcp9JuMw8kaiFib+J6FDwyxKOMxnv59Hw=="
   },
   "AUTHORS.rst": {
     "doc.authors": "/4DdVJ8b3rG94lfO9Lc7StWASvDQpuf73AL4vpQmxvi4N9ShPsMeP3Shwf6i2d3e4dvIUgDW1Mc0vUxg5LkbUw==",
-    "doc.contributors": "AWuoxM/eZa+Zy1+ouKN+Lrc/SBs640mRZm3y4E/rbAOGZuvR7CtvYjlndWAzxwLd5fQj99R6tu0YJ/9TeDcx9w=="
+    "doc.contributors": "5YwhrGXl04YfqG0zram5BqXVfFMtF3HlDFOHCxWkql1uZ9alciqRP+wDpV0Eb3vFid6788bxgNB37JBkuTXZIA=="
   },
   "CONTRIBUTING.rst": {},
   "HISTORY.rst": {},
@@ -19,7 +22,7 @@
   },
   "doc/_static/nonempty.txt": {},
   "requirements.txt": {
-    "pysetup": "iTZjqP70gqex+rrZDs7t3VRB1rbw7XzvC1skzRwmCpxkQE8S6ge4wSQa/65a5KT9nmYhJoSTtiMzHRYw1o7Rug=="
+    "pysetup": "QAXtEjmO4KEUzYhQSE8zFjEGaUsVWW689HUpS6ZMxodrDgJs112TnAd32aPBGRQ7l5CQQSatWvJsMkry3LG89g=="
   },
   "requirements_minimal.txt": {
     "pysetup": "vmiIOMqGhuXJBom/KrWFzvETfJmbSMcLkvZ6XDTcFWl7XRHJgu1tcb4eHn97TgcziEqpfD96M5qO0DV3z3S+CQ=="
@@ -33,7 +36,7 @@
   },
   "setup.py": {
     "pysetup.call": "t30iIuCMd/sWxStR2XNYb8bCBgwanhKt8YYn2VKACyAqL5cKFRUWpVRIpAR+uxXUZ9PYYy2csMmECcONnRZE8w==",
-    "pysetup.kwds": "UzHaJhOgd6ScIhxMn7sXM6jI1SxNg2m1MbDeFtuaNKeobaEQ+yZ+J1r5qF7V0AXxsflAAtDd/gHdhRnO4nvCmA=="
+    "pysetup.kwds": "bMXAcXyMwJTpn03ATH+bsyje1AIpcN4eLFbtnCetc7kFTZwpZgqlLAqS5LfyKSMybMcoCxR37pNvLDA8/dNsRg=="
   },
   "src/cbzreader/__init__.py": {
     "base": "+GVGxVjJGifAp8dAR9V2W3aVPe7/D53bN7r0O5VxO9OUqG4vnGTZvnORu1objjjIwm86DgemQd7ax/IJpRa8Wg=="
@@ -43,7 +46,7 @@
   },
   "test/conftest.py": {
     "test.pytest_addoption": "I/hswVryIEYvZRBcFqkfRBxLP6eZCwZSbQuPclkOkjHw4MApBst5h7H0ejnMMe4bmwHXMXR5DCSxOMj/FcCnjQ==",
-    "test.pytest_cmdline_preparse": "Lid4ojpVpBIIn1jpCe1fmfeSeAgYhmIu4K5huJGEMv87/LruGeI0PjWNyONDNXlZrL0CL0BPTKvXlOkEj3jIWA==",
+    "test.pytest_cmdline_preparse": "4X4RNFt8p8hjBGJBQBjWQDC2HtmnCU9e/8/Uw4v7Phu/1/K6QMBHESBbP+azLM4AkaP3HVPmsyFzgivyjVhTUw==",
     "test.pytest_collection": "a/3h30sLUHJ7xWsOrmfCInOOVXvm660dS+RxHwcDUcae2jHqDLRGhq/v8zgC+FSzN3pXaEaJ1QBJ9MNLOUBuCA==",
     "test.pytest_import": "2ox6A0szNpUYZR5cJJRSW3OwEWR558BOiUMjC/OVkTPT++CF/OCgGSELCPL+7YHWaJGQKMw2rtCXmOMeSK5ZJA=="
   }

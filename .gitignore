@@ -83,6 +83,9 @@ target/
 .cache/
 .pytest_cache/
 
+# coverage
+.coverage
+
 
 # #}
 
