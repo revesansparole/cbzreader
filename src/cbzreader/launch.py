@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from PyQt5.QtGui import QApplication
 
 from .cbz_reader import CBZReader
