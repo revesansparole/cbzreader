@@ -11,7 +11,6 @@ next_cbz = "Ctrl+Right"
 prev_cbz = "Ctrl+Left"
 close = "Ctrl+Q"
 
-
 ############################################
 #
 #	menu view
@@ -35,8 +34,3 @@ swap_left = "-"
 swap_right = "+"
 cut_height = "K"
 cut_width = "Shift+K"
-
-
-
-
-
