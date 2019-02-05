@@ -1,7 +1,7 @@
 import Image
 from ImageQt import ImageQt
-from PyQt4.QtCore import Qt, SIGNAL
-from PyQt4.QtGui import QColor, QLabel, QPainter, QPen, QPixmap
+from PyQt5.QtCore import Qt, SIGNAL
+from PyQt5.QtGui import QColor, QLabel, QPainter, QPen, QPixmap
 
 
 class ImageView(QLabel):

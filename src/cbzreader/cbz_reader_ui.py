@@ -1,8 +1,8 @@
 import cbz_reader_cfg as sh
 from PyQt5.QtCore import QObject, SIGNAL
 from PyQt5.QtWidgets import (QAction, QColor, QIcon, QShortcut)
-from image_view import ImageView
 
+from .image_view import ImageView
 from . import icons_rc
 
 def setup_ui(mw):

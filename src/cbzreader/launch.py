@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-from PyQt4.QtGui import QApplication
-from cbz_reader import CBZReader
+from PyQt5.QtGui import QApplication
+
+from .cbz_reader import CBZReader
 
 
 def read(cbz_file):
