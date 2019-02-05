@@ -49,6 +49,10 @@ class Reader(QWidget):
         self.next_button.clicked.connect(self.next_page)
         g_layout.addLayout(h_layout, 2, 0)
 
+    def closeEvent(self, event):
+        self._ex.close()
+        super().closeEvent(event)
+
     def load_file(self):
         file_names, _ = QFileDialog.getOpenFileNames(self, "Select Files", "", "Books (*.cbz)")
         if file_names:
@@ -72,6 +76,10 @@ class Reader(QWidget):
 
 
     def next_page(self):
+        if self._current_page == self._ex.page_number() - 1:
+            print("last page already")
+            return
+
         self._current_page += 1
         img = self._ex.open_page(self._current_page)
         self.img_view.set_image(img)
