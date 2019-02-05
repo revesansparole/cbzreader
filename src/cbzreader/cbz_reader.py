@@ -4,8 +4,8 @@ from pickle import dump, dumps, load, loads
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 from PIL import Image
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QMainWindow, QMessageBox)
+from PyQt5.QtCore import Qt, QCoreApplication
+from PyQt5.QtWidgets import (QFileDialog, QMainWindow, QMessageBox)
 from os.path import basename, dirname, exists, expanduser, join, splitext
 
 from . import cbz_reader_ui
@@ -378,7 +378,7 @@ class CBZReader(QMainWindow):
         """Save current archive under given name
         """
         self.setEnabled(False)  # save is potentialy a long operation
-        QApplication.instance().processEvents()
+        QCoreApplication.instance().processEvents()
 
         tmp_name = self.bufname(name)
         fw = ZipFile(tmp_name, 'w')

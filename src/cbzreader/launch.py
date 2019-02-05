@@ -1,10 +1,10 @@
-from PyQt5.QtGui import QApplication
+from PyQt5.QtGui import QGuiApplication
 
-from .cbz_reader import CBZReader
+from cbzreader.cbz_reader import CBZReader
 
 
 def read(cbz_file):
-    qapp = QApplication([])
+    qapp = QGuiApplication([])
 
     reader = CBZReader(cbz_file)
 
