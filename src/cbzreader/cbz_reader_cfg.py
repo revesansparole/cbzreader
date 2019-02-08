@@ -7,8 +7,8 @@ open = "Ctrl+O"
 save = "Ctrl+S"
 save_as = "Ctrl+Shift+S"
 snapshot = "Ctrl+B"
-next_cbz = "Ctrl+Right"
-prev_cbz = "Ctrl+Left"
+next_book = "Ctrl+Right"
+prev_book = "Ctrl+Left"
 close = "Ctrl+Q"
 
 ############################################
