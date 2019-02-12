@@ -19,8 +19,8 @@ def setup_ui(mw):
     mw.setMinimumSize(600, 600)
     mw.setWindowIcon(QIcon(":images/cbzreader.png"))
 
-    mw.view_page = ImageView()
-    mw.setCentralWidget(mw.view_page)
+    mw.ui.view_page = ImageView()
+    mw.setCentralWidget(mw.ui.view_page)
 
     menubar = mw.menuBar()
 

@@ -1,3 +1,4 @@
+import pickle
 from pathlib import Path
 
 from PyQt5.QtCore import QCoreApplication, Qt
@@ -15,6 +16,11 @@ class Reader(QMainWindow):
         self._current_page = None
 
         self.init_gui()
+
+        last_open = self.load_state()
+        if last_open is not None:
+            if last_open[0].exists():
+                self.load(*last_open)
 
     def init_gui(self):
         setup_ui(self)
@@ -37,6 +43,7 @@ class Reader(QMainWindow):
 
     def closeEvent(self, event):
         self._ex.close()
+        self.save_state()
         super().closeEvent(event)
 
     def action_escape(self):
@@ -73,6 +80,66 @@ class Reader(QMainWindow):
 
         self.setWindowTitle(title)
 
+    ########################################################
+    #
+    #	Viewer state
+    #
+    ########################################################
+    def load_state(self):
+        """Load previously stored state of the viewer
+        """
+        state_pth = Path.home() / ".cbz_reader.cfg"
+        if state_pth.exists():
+            try:
+                state = pickle.load(state_pth.open('rb'))
+            except EOFError:
+                return None
+
+            # show options
+            show = state.get("show mouse", True)
+            self.ui.action_show_mouse.setChecked(show)
+
+            # set view transformation
+            self.ui.view_page.set_transfo(state.get("transfo", None))
+
+            # set viewer geometry
+            try:
+                self.restoreGeometry(state["geom"])
+            except KeyError:
+                pass
+            # set widget state
+            try:
+                self.restoreState(state["widget state"])
+            except KeyError:
+                pass
+            # full screen options
+            if state.get("full screen", False):
+                self.menuBar().hide()
+                if self.hide_mouse_cursor():
+                    self.setCursor(Qt.BlankCursor)
+
+            # reload last open file
+            return state.get("last", None)
+
+    def save_state(self):
+        """Save current state of the viewer in a file
+        """
+        state_pth = Path.home() / ".cbz_reader.cfg"
+        last = (self._ex.current_book(), self._current_page)
+        state = {"transfo": self.ui.view_page.transfo(),
+                 "geom": bytes(self.saveGeometry()),
+                 "widget state": bytes(self.saveState()),
+                 "full screen": self.isFullScreen(),
+                 "last": last,
+                 "show mouse": self.ui.action_show_mouse.isChecked()}
+
+        pickle.dump(state, state_pth.open('wb'))
+
+    ########################################################
+    #
+    #	file
+    #
+    ########################################################
     def load(self, pth, current_page=0):
         """Load pth as current open book.
         """
@@ -83,7 +150,7 @@ class Reader(QMainWindow):
         self._current_page = current_page
 
         img = self._ex.open_page(self._current_page)
-        self.view_page.set_image(img)
+        self.ui.view_page.set_image(img)
         self.update_title()
 
     def action_load(self):
@@ -98,7 +165,7 @@ class Reader(QMainWindow):
 
             self._current_page = 0
             img = self._ex.open_page(self._current_page)
-            self.view_page.set_image(img)
+            self.ui.view_page.set_image(img)
             self.update_title()
         except IndexError:
             print("First book already")
@@ -109,7 +176,7 @@ class Reader(QMainWindow):
 
             self._current_page = 0
             img = self._ex.open_page(self._current_page)
-            self.view_page.set_image(img)
+            self.ui.view_page.set_image(img)
             self.update_title()
         except IndexError:
             print("Last book already")
@@ -153,7 +220,7 @@ class Reader(QMainWindow):
             print("load a book first")
             return
 
-        self.view_page.rotate()
+        self.ui.view_page.rotate()
 
     def prev_page(self):
         if self._current_page is None:
@@ -166,7 +233,7 @@ class Reader(QMainWindow):
 
         self._current_page -= 1
         img = self._ex.open_page(self._current_page)
-        self.view_page.set_image(img)
+        self.ui.view_page.set_image(img)
         self.update_title()
 
     def next_page(self):
@@ -180,5 +247,5 @@ class Reader(QMainWindow):
 
         self._current_page += 1
         img = self._ex.open_page(self._current_page)
-        self.view_page.set_image(img)
+        self.ui.view_page.set_image(img)
         self.update_title()
