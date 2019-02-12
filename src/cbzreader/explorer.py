@@ -2,6 +2,8 @@
 An explorer is used to navigate through the different cbz files in a directory
 and display the content of each.
 """
+from datetime import datetime
+from io import BytesIO
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 from PIL import Image
@@ -205,3 +207,22 @@ class Explorer:
             img.save(str(pth))  # overwrite buffer to avoid doing it each time
 
         return img
+
+    def save_book(self, pth):
+        """Save current book on disk.
+
+        Args:
+            pth (Path): path to archive to create
+
+        Returns:
+            (None)
+        """
+        with ZipFile(pth, 'w') as fw:
+            for i in range(self.page_number()):
+                img = self.open_page(i)
+                data = BytesIO()
+                img.save(data, 'jpeg')
+
+                info = ZipInfo(f"page{i:04d}.jpg", datetime.now().timetuple()[:6])
+                info.compress_type = ZIP_DEFLATED
+                fw.writestr(info, data.getvalue())
