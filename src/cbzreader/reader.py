@@ -13,7 +13,6 @@ class Reader(QMainWindow):
 
         self._ex = Explorer()
         self._current_page = None
-        self._book_pth = None
 
         self.init_gui()
 
@@ -64,10 +63,10 @@ class Reader(QMainWindow):
                 self.setCursor(Qt.BlankCursor)
 
     def update_title(self):
-        if self._book_pth is None:
+        if self._ex.current_book() is None:
             title = "No Book"
         else:
-            book_name = self._book_pth.name
+            book_name = self._ex.current_book().name
             cur_page = self._current_page + 1
             nb_pages = self._ex.page_number()
             title = f"{book_name} {cur_page:d} / {nb_pages:d}"
@@ -78,7 +77,6 @@ class Reader(QMainWindow):
         """Load pth as current open book.
         """
         self._ex.set_book(pth)
-        self._book_pth = self._ex.current_book()
 
         current_page = max(0, current_page)
         current_page = min(self._ex.page_number() - 1, current_page)
@@ -97,7 +95,6 @@ class Reader(QMainWindow):
     def prev_book(self):
         try:
             self._ex.prev_book()
-            self._book_pth = self._ex.current_book()
 
             self._current_page = 0
             img = self._ex.open_page(self._current_page)
@@ -109,7 +106,6 @@ class Reader(QMainWindow):
     def next_book(self):
         try:
             self._ex.next_book()
-            self._book_pth = self._ex.current_book()
 
             self._current_page = 0
             img = self._ex.open_page(self._current_page)
@@ -125,9 +121,7 @@ class Reader(QMainWindow):
         QCoreApplication.instance().processEvents()
 
         self._ex.save_book(pth)
-
-        # reopen book to reinit viewer
-        self.load(pth, self._current_page)
+        self.update_title()
 
         self.setEnabled(True)
 
@@ -136,10 +130,10 @@ class Reader(QMainWindow):
             print("load a book first")
             return
 
-        if self._book_pth is None:
+        if self._ex.current_book() is None:
             self.action_save_as()
         else:
-            self.save(self._book_pth)
+            self.save(self._ex.current_book())
 
     def action_save_as(self):
         if self._current_page is None:

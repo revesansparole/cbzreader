@@ -62,6 +62,15 @@ class Explorer:
         self._clear_buffer_dir()
         self._cbz = None
 
+    def close_book(self):
+        """Cleanly close current open book
+
+        Returns:
+            (None)
+        """
+        if self._cbz is not None:
+            self._cbz = None
+
     def set_book(self, pth):
         """Open given book as current.
 
@@ -217,7 +226,8 @@ class Explorer:
         Returns:
             (None)
         """
-        with ZipFile(pth, 'w') as fw:
+        tmp_pth = Path('toto_tugudu.cbz')
+        with ZipFile(tmp_pth, 'w') as fw:
             for i in range(self.page_number()):
                 img = self.open_page(i)
                 data = BytesIO()
@@ -226,3 +236,13 @@ class Explorer:
                 info = ZipInfo(f"page{i:04d}.jpg", datetime.now().timetuple()[:6])
                 info.compress_type = ZIP_DEFLATED
                 fw.writestr(info, data.getvalue())
+
+        if pth == self._pth:
+            self.close_book()
+
+        if pth.exists():
+            pth.unlink()
+
+        tmp_pth.rename(pth)
+
+        self.set_book(pth)
