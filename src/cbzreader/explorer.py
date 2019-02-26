@@ -19,7 +19,6 @@ class Explorer:
             pth (str): path to current file
         """
         self._pth = None  # path to currently opened book
-        self._cbz = None  # handle to opened zip book
         self._buf_dir = None  # directory to write images temporarily
         self._pages = None  # list of page names in currently open book
 
@@ -71,9 +70,6 @@ class Explorer:
         """
         self._pth = None
 
-        if self._cbz is not None:
-            self._cbz = None
-
         if self._pages is not None:
             self._pages = None
 
@@ -91,8 +87,8 @@ class Explorer:
         self._clear_buffer_dir()
 
         self._pth = pth
-        self._cbz = ZipFile(pth, 'r')
-        self._pages = sorted([n for n in self._cbz.namelist() if n.split(".")[-1].lower() in im_exts])
+        with ZipFile(pth, 'r') as cbz:
+            self._pages = sorted([n for n in cbz.namelist() if n.split(".")[-1].lower() in im_exts])
 
     def current_book(self):
         """Path to currently open book.
@@ -183,7 +179,9 @@ class Explorer:
 
         assert 0 <= page < self.page_number()
 
-        data = self._cbz.read(self._pages[page])
+        with ZipFile(self._pth, 'r') as cbz:
+            data = cbz.read(self._pages[page])
+
         page_pth = self._buffer_name(page)
         with page_pth.open('wb') as fhw:
             fhw.write(data)

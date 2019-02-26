@@ -46,8 +46,8 @@ class Reader(QMainWindow):
         QShortcut("Escape", self, self.action_escape)
 
     def closeEvent(self, event):
-        self._ex.close()
         self.save_state()
+        self._ex.close()
         super().closeEvent(event)
 
     def action_escape(self):
