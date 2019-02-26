@@ -56,7 +56,7 @@ class Reader(QMainWindow):
         """Tells whether mouse cursor is hidden
         in full screen mode
         """
-        return not self.action_show_mouse.isChecked()
+        return not self.ui.action_show_mouse.isChecked()
 
     def toggle_full_screen(self):
         if self.isFullScreen():  # go normal window mode
