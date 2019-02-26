@@ -260,7 +260,6 @@ class Explorer:
         Returns:
             (None)
         """
-        print("delete")
         assert 0 <= page < self.page_number()
 
         del self._pages[page]
