@@ -85,3 +85,10 @@ def setup_ui(mw):
     menu_view.addAction(mw.ui.action_rotate)
     menu_view.addSeparator()
     menu_view.addAction(mw.ui.action_show_mouse)
+
+    # Menu edit
+    mw.ui.action_info = QAction("&Info", mw)
+    QShortcut(sh.info, mw, mw.ui.action_info.trigger)
+
+    menu_edit = menubar.addMenu('&Edit')
+    menu_edit.addAction(mw.ui.action_info)

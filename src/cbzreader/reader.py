@@ -2,7 +2,7 @@ import pickle
 from pathlib import Path
 
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import (QFileDialog, QMainWindow, QShortcut)
+from PyQt5.QtWidgets import (QFileDialog, QMainWindow, QMessageBox, QShortcut)
 
 from .explorer import Explorer
 from .reader_ui import setup_ui
@@ -38,6 +38,9 @@ class Reader(QMainWindow):
         self.ui.action_prev_page.triggered.connect(self.prev_page)
         self.ui.action_next_page.triggered.connect(self.next_page)
         self.ui.action_rotate.triggered.connect(self.rotate_page)
+
+        # menu view
+        self.ui.action_info.triggered.connect(self.image_info)
 
         QShortcut("Escape", self, self.action_escape)
 
@@ -215,6 +218,11 @@ class Reader(QMainWindow):
         if name is not None:
             self.save(Path(name))
 
+    ########################################################
+    #
+    #	view
+    #
+    ########################################################
     def rotate_page(self):
         if self._current_page is None:
             print("load a book first")
@@ -249,3 +257,22 @@ class Reader(QMainWindow):
         img = self._ex.open_page(self._current_page)
         self.ui.view_page.set_image(img)
         self.update_title()
+
+    ########################################################
+    #
+    #	edit
+    #
+    ########################################################
+    def image_info(self):
+        """Display information about current image in
+        a dialog
+        """
+        if self._current_page is None:
+            print("load a book first")
+            return
+
+        img = self._ex.open_page(self._current_page)
+        info_str = f"size: {img.size[0]:d}, {img.size[1]:d}"
+
+        QMessageBox.information(self, "Image info", info_str)
+
