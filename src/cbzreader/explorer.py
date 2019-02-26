@@ -21,6 +21,7 @@ class Explorer:
         self._pth = None  # path to currently opened book
         self._cbz = None  # handle to opened zip book
         self._buf_dir = None  # directory to write images temporarily
+        self._pages = None  # list of page names in currently open book
 
         if pth is not None:
             self.set_book(Path(pth))
@@ -60,7 +61,7 @@ class Explorer:
             (None)
         """
         self._clear_buffer_dir()
-        self._cbz = None
+        self.close_book()
 
     def close_book(self):
         """Cleanly close current open book
@@ -68,8 +69,13 @@ class Explorer:
         Returns:
             (None)
         """
+        self._pth = None
+
         if self._cbz is not None:
             self._cbz = None
+
+        if self._pages is not None:
+            self._pages = None
 
     def set_book(self, pth):
         """Open given book as current.
@@ -86,6 +92,7 @@ class Explorer:
 
         self._pth = pth
         self._cbz = ZipFile(pth, 'r')
+        self._pages = sorted([n for n in self._cbz.namelist() if n.split(".")[-1].lower() in im_exts])
 
     def current_book(self):
         """Path to currently open book.
@@ -108,6 +115,7 @@ class Explorer:
         if ind == len(books) - 1:
             raise IndexError("Current book is last book in dir")
 
+        self.close_book()
         self.set_book(books[ind + 1])
 
     def prev_book(self):
@@ -123,9 +131,10 @@ class Explorer:
         if ind == 0:
             raise IndexError("Current book is first book in dir")
 
+        self.close_book()
         self.set_book(books[ind - 1])
 
-    def _buffer_name(self, page, ext):
+    def _buffer_name(self, page):
         """Construct a valid buffer name
 
         Args:
@@ -135,7 +144,7 @@ class Explorer:
         Returns:
             (Path)
         """
-        return self._buf_dir / f"page{page:05d}.{ext}"
+        return self._buf_dir / self._pages[page]  # assert flat pages no sub directories
 
     def _already_bufferized(self, page):
         """Check if page already in buffer.
@@ -146,10 +155,9 @@ class Explorer:
         Returns:
             (Path|None): None if nothing is found
         """
-        for ext in im_exts:
-            page_pth = self._buffer_name(page, ext)
-            if page_pth.exists():
-                return page_pth
+        page_pth = self._buffer_name(page)
+        if page_pth.exists():
+            return page_pth
 
     def buffer(self, page=0):
         """Extract and write given page into associated buffer.
@@ -173,12 +181,10 @@ class Explorer:
         if page_pth is not None:
             return page_pth
 
-        pages = sorted([n for n in self._cbz.namelist() if n.split(".")[-1].lower() in im_exts])
+        assert 0 <= page < self.page_number()
 
-        assert 0 <= page < len(pages)
-
-        data = self._cbz.read(pages[page])
-        page_pth = self._buffer_name(page, pages[page].split(".")[-1].lower())
+        data = self._cbz.read(self._pages[page])
+        page_pth = self._buffer_name(page)
         with page_pth.open('wb') as fhw:
             fhw.write(data)
 
@@ -190,7 +196,7 @@ class Explorer:
         Returns:
             (int)
         """
-        return len([n for n in self._cbz.namelist() if n.split(".")[-1].lower() in im_exts])
+        return len(self._pages)
 
     def open_page(self, page):
         """Read page and return image.
@@ -246,3 +252,17 @@ class Explorer:
         tmp_pth.rename(pth)
 
         self.set_book(pth)
+
+    def delete_page(self, page):
+        """Delete given page from book.
+
+        Args:
+            page (int): page index
+
+        Returns:
+            (None)
+        """
+        print("delete")
+        assert 0 <= page < self.page_number()
+
+        del self._pages[page]

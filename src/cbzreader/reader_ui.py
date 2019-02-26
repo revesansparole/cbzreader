@@ -90,5 +90,9 @@ def setup_ui(mw):
     mw.ui.action_info = QAction("&Info", mw)
     QShortcut(sh.info, mw, mw.ui.action_info.trigger)
 
+    mw.ui.action_delete = QAction("&Delete", mw)
+    QShortcut(sh.delete, mw, mw.ui.action_delete.trigger)
+
     menu_edit = menubar.addMenu('&Edit')
     menu_edit.addAction(mw.ui.action_info)
+    menu_edit.addAction(mw.ui.action_delete)

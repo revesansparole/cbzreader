@@ -18,7 +18,7 @@ class Reader(QMainWindow):
         self.init_gui()
 
         last_open = self.load_state()
-        if last_open is not None:
+        if last_open is not None and last_open[0] is not None:
             if last_open[0].exists():
                 self.load(*last_open)
 
@@ -41,6 +41,7 @@ class Reader(QMainWindow):
 
         # menu view
         self.ui.action_info.triggered.connect(self.image_info)
+        self.ui.action_delete.triggered.connect(self.delete_current)
 
         QShortcut("Escape", self, self.action_escape)
 
@@ -275,4 +276,26 @@ class Reader(QMainWindow):
         info_str = f"size: {img.size[0]:d}, {img.size[1]:d}"
 
         QMessageBox.information(self, "Image info", info_str)
+
+    def delete_current(self):
+        """Delete current page from book.
+        """
+        if self._current_page is None:
+            print("load a book first")
+            return
+
+        self._ex.delete_page(self._current_page)
+
+        if self._current_page == self._ex.page_number():
+            self._current_page -= 1
+            if self._current_page < 0:
+                print("empty book")
+                self._ex.close_book()
+                self.ui.view_page.set_image(None)
+                self.update_title()
+                return
+
+        img = self._ex.open_page(self._current_page)
+        self.ui.view_page.set_image(img)
+        self.update_title()
 
