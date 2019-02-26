@@ -84,6 +84,7 @@ class Explorer:
         """
         assert pth.suffix == ".cbz"
 
+        self.close_book()
         self._clear_buffer_dir()
 
         self._pth = pth
@@ -99,36 +100,34 @@ class Explorer:
         return self._pth
 
     def next_book(self):
-        """Open next book in current directory.
+        """Path to next book in current directory.
 
         Raises: IndexError if current file is last file in dir.
 
         Returns:
-            (None)
+            (Path): path to next book
         """
         books = sorted(self._pth.parent.glob("*.cbz"))
         ind = books.index(self._pth)
         if ind == len(books) - 1:
             raise IndexError("Current book is last book in dir")
 
-        self.close_book()
-        self.set_book(books[ind + 1])
+        return books[ind + 1]
 
     def prev_book(self):
-        """Open previous book in current directory.
+        """Path to previous book in current directory.
 
         Raises: IndexError if current file is first file in dir.
 
         Returns:
-            (None)
+            (Path): path to previous book
         """
         books = sorted(self._pth.parent.glob("*.cbz"))
         ind = books.index(self._pth)
         if ind == 0:
             raise IndexError("Current book is first book in dir")
 
-        self.close_book()
-        self.set_book(books[ind - 1])
+        return books[ind - 1]
 
     def _buffer_name(self, page):
         """Construct a valid buffer name

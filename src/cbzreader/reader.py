@@ -14,6 +14,7 @@ class Reader(QMainWindow):
 
         self._ex = Explorer()
         self._current_page = None
+        self._file_modified = False
 
         self.init_gui()
 
@@ -48,7 +49,7 @@ class Reader(QMainWindow):
 
     def closeEvent(self, event):
         self.save_state()
-        self._ex.close()
+        self.safe_close_file()
         super().closeEvent(event)
 
     def action_escape(self):
@@ -145,10 +146,37 @@ class Reader(QMainWindow):
     #	file
     #
     ########################################################
+    def safe_close_file(self):
+        # edition?
+        if self._file_modified:
+            msg = QMessageBox(self)
+            msg.setText("File modified")
+            msg.setInformativeText("Want to save?")
+            but_overwrite = msg.addButton("Overwrite", msg.AcceptRole)
+            but_new = msg.addButton("New file", msg.AcceptRole)
+            but_no = msg.addButton("No", msg.RejectRole)
+            msg.setDefaultButton(but_new)
+
+            msg.exec_()
+
+            clicked = msg.clickedButton()
+            if clicked == but_no:
+                # do nothing
+                pass
+            elif clicked == but_overwrite:
+                self.save(self._ex.current_book())
+            elif clicked == but_new:
+                self.action_save_as()
+
+        self._ex.close_book()
+
     def load(self, pth, current_page=0):
         """Load pth as current open book.
         """
+        self.safe_close_file()
+
         self._ex.set_book(pth)
+        self._file_modified = False
 
         current_page = max(0, current_page)
         current_page = min(self._ex.page_number() - 1, current_page)
@@ -166,23 +194,15 @@ class Reader(QMainWindow):
 
     def prev_book(self):
         try:
-            self._ex.prev_book()
-
-            self._current_page = 0
-            img = self._ex.open_page(self._current_page)
-            self.ui.view_page.set_image(img)
-            self.update_title()
+            pth = self._ex.prev_book()
+            self.load(pth)
         except IndexError:
             print("First book already")
 
     def next_book(self):
         try:
-            self._ex.next_book()
-
-            self._current_page = 0
-            img = self._ex.open_page(self._current_page)
-            self.ui.view_page.set_image(img)
-            self.update_title()
+            pth = self._ex.next_book()
+            self.load(pth)
         except IndexError:
             print("Last book already")
 
@@ -194,6 +214,7 @@ class Reader(QMainWindow):
 
         self._ex.save_book(pth)
         self.update_title()
+        self._file_modified = False
 
         self.setEnabled(True)
 
@@ -291,11 +312,13 @@ class Reader(QMainWindow):
             self._current_page -= 1
             if self._current_page < 0:
                 print("empty book")
+                self._file_modified = False
                 self._ex.close_book()
                 self.ui.view_page.set_image(None)
                 self.update_title()
                 return
 
+        self._file_modified = True
         img = self._ex.open_page(self._current_page)
         self.ui.view_page.set_image(img)
         self.update_title()
@@ -310,6 +333,7 @@ class Reader(QMainWindow):
 
         # transpose image
         self._ex.transpose(self._current_page)
+        self._file_modified = True
 
         # update view
         img = self._ex.open_page(self._current_page)
