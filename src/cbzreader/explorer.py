@@ -277,3 +277,18 @@ class Explorer:
 
         img = img.transpose(Image.ROTATE_180)
         img.save(str(pth))  # overwrite buffer
+
+    def swap(self, page_src, page_dst):
+        """Swap pages between source and destination.
+
+        Args:
+            page_src (int): page to swap
+            page_dst (int): index of page to replace
+
+        Returns:
+            (None)
+        """
+        assert 0 <= page_src < self.page_number()
+        assert 0 <= page_dst < self.page_number()
+
+        self._pages[page_dst], self._pages[page_src] = self._pages[page_src], self._pages[page_dst]

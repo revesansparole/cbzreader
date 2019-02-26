@@ -94,6 +94,10 @@ def setup_ui(mw):
     QShortcut(sh.delete, mw, mw.ui.action_delete.trigger)
     mw.ui.action_updown = QAction("Upside Down", mw)
     QShortcut(sh.updown, mw, mw.ui.action_updown.trigger)
+    mw.ui.action_swap_left = QAction("Swap left", mw)
+    QShortcut(sh.swap_left, mw, mw.ui.action_swap_left.trigger)
+    mw.ui.action_swap_right = QAction("Swap right", mw)
+    QShortcut(sh.swap_right, mw, mw.ui.action_swap_right.trigger)
 
     menu_edit = menubar.addMenu('&Edit')
     menu_edit.addAction(mw.ui.action_info)

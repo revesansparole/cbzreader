@@ -40,10 +40,12 @@ class Reader(QMainWindow):
         self.ui.action_next_page.triggered.connect(self.next_page)
         self.ui.action_rotate.triggered.connect(self.rotate_page)
 
-        # menu view
+        # menu viewedit
         self.ui.action_info.triggered.connect(self.image_info)
         self.ui.action_delete.triggered.connect(self.delete_current)
         self.ui.action_updown.triggered.connect(self.image_updown)
+        self.ui.action_swap_left.triggered.connect(self.swap_left)
+        self.ui.action_swap_right.triggered.connect(self.swap_right)
 
         QShortcut("Escape", self, self.action_escape)
 
@@ -333,6 +335,48 @@ class Reader(QMainWindow):
 
         # transpose image
         self._ex.transpose(self._current_page)
+        self._file_modified = True
+
+        # update view
+        img = self._ex.open_page(self._current_page)
+        self.ui.view_page.set_image(img)
+        self.update_title()
+
+    def swap_left(self):
+        """Swap page with previous one.
+        """
+        if self._current_page is None:
+            print("load a book first")
+            return
+
+        if self._current_page == 0:
+            print("First page already")
+            return
+
+        # swap pages
+        self._ex.swap(self._current_page, self._current_page - 1)
+        self._current_page -= 1
+        self._file_modified = True
+
+        # update view
+        img = self._ex.open_page(self._current_page)
+        self.ui.view_page.set_image(img)
+        self.update_title()
+
+    def swap_right(self):
+        """Swap page with next one.
+        """
+        if self._current_page is None:
+            print("load a book first")
+            return
+
+        if self._current_page == self._ex.page_number() - 1:
+            print("Last page already")
+            return
+
+        # swap pages
+        self._ex.swap(self._current_page, self._current_page + 1)
+        self._current_page += 1
         self._file_modified = True
 
         # update view
