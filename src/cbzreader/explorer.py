@@ -263,3 +263,18 @@ class Explorer:
         assert 0 <= page < self.page_number()
 
         del self._pages[page]
+
+    def transpose(self, page):
+        """Transpose given page from book
+
+        Args:
+            page (int): page index
+
+        Returns:
+            (None)
+        """
+        pth = self.buffer(page)
+        img = self.open_page(page)
+
+        img = img.transpose(Image.ROTATE_180)
+        img.save(str(pth))  # overwrite buffer

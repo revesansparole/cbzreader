@@ -92,7 +92,10 @@ def setup_ui(mw):
 
     mw.ui.action_delete = QAction("&Delete", mw)
     QShortcut(sh.delete, mw, mw.ui.action_delete.trigger)
+    mw.ui.action_updown = QAction("Upside Down", mw)
+    QShortcut(sh.updown, mw, mw.ui.action_updown.trigger)
 
     menu_edit = menubar.addMenu('&Edit')
     menu_edit.addAction(mw.ui.action_info)
     menu_edit.addAction(mw.ui.action_delete)
+    menu_edit.addAction(mw.ui.action_updown)

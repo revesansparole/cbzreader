@@ -42,6 +42,7 @@ class Reader(QMainWindow):
         # menu view
         self.ui.action_info.triggered.connect(self.image_info)
         self.ui.action_delete.triggered.connect(self.delete_current)
+        self.ui.action_updown.triggered.connect(self.image_updown)
 
         QShortcut("Escape", self, self.action_escape)
 
@@ -299,3 +300,18 @@ class Reader(QMainWindow):
         self.ui.view_page.set_image(img)
         self.update_title()
 
+    def image_updown(self):
+        """Transpose image upside down
+        """
+
+        if self._current_page is None:
+            print("load a book first")
+            return
+
+        # transpose image
+        self._ex.transpose(self._current_page)
+
+        # update view
+        img = self._ex.open_page(self._current_page)
+        self.ui.view_page.set_image(img)
+        self.update_title()
