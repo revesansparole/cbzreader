@@ -52,6 +52,7 @@ class Reader(QMainWindow):
     def closeEvent(self, event):
         self.save_state()
         self.safe_close_file()
+        self._ex.close()
         super().closeEvent(event)
 
     def action_escape(self):
